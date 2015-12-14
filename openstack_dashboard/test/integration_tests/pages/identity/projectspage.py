@@ -11,6 +11,7 @@
 #    under the License.
 
 from selenium.webdriver.common import by
+from selenium.webdriver import ActionChains
 
 from openstack_dashboard.test.integration_tests.pages import basepage
 from openstack_dashboard.test.integration_tests.regions import forms
@@ -28,6 +29,11 @@ class ProjectsPage(basepage.BaseNavigationPage):
     _delete_project_submit_button_locator = (
         by.By.CSS_SELECTOR,
         'a.btn.btn-primary')
+
+    _delete_project_modal_body_locator = (
+        by.By.CSS_SELECTOR,
+        '.modal-body'
+    )
 
     _modal_locator = (
         by.By.CSS_SELECTOR,
@@ -79,6 +85,11 @@ class ProjectsPage(basepage.BaseNavigationPage):
         return self._get_element(
             *self._delete_project_submit_button_locator)
 
+    @property
+    def delete_project_modal_body(self):
+        return self._get_element(
+            *self._delete_project_modal_body_locator)
+
     def _get_row_with_project_name(self, name):
         return self.projects_table.get_row(
             self.PROJECTS_TABLE_NAME_COLUMN_INDEX, name)
@@ -119,3 +130,21 @@ class ProjectsPage(basepage.BaseNavigationPage):
         row = self._get_row_with_project_name(project_name)
         row.delete_project.click()
         self.delete_project_submit_button.click()
+
+    def edit_project_name(self, project_name, new_project_name):
+        row = self._get_row_with_project_name(project_name)
+        ActionChains(self.driver).move_to_element(row.cells[0]).click(row.inline_edit_button).perform()
+        text_box = row.inline_edit_text_box
+        text_box.clear()
+        text_box.send_keys(new_project_name)
+        ActionChains(self.driver).click(row.inline_edit_submit_button).perform()
+
+    def bring_up_delete_project_modal(self, project_name):
+        row = self._get_row_with_project_name(project_name)
+        row.mark()
+        self.projects_table.delete.click()
+
+    def close_delete_project_modal(self):
+        self.delete_project_submit_button.click()
+        self.wait_till_popups_disappear()
+
