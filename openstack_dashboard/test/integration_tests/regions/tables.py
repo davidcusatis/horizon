@@ -69,6 +69,15 @@ class ComplexActionRowRegion(BaseActionRowRegion):
     _secondary_actions_dropdown_locator = (by.By.CSS_SELECTOR,
                                            'div.btn-group')
 
+    _inline_project_name_edit_button_locator = (by.By.CSS_SELECTOR,
+                                                'button.ajax-inline-edit')
+
+    _inline_project_name_input_text_locator = (by.By.CSS_SELECTOR,
+                                               'div.inline-edit-form > input')
+
+    _inline_edit_submit_locator = (by.By.CSS_SELECTOR,
+                                   '.inline-edit-submit')
+
     PRIMARY_ACTION = "primary_action"
     SECONDARY_ACTIONS = "secondary_actions"
 
@@ -102,6 +111,29 @@ class ComplexActionRowRegion(BaseActionRowRegion):
         src_elem = self._get_element(*self._secondary_actions_dropdown_locator)
         dropdown = menus.DropDownMenuRegion(self.driver, self.conf, src_elem)
         return dropdown.menu_items
+
+    def _get_inline_edit_action(self):
+        return self._get_element(
+            *self._inline_project_name_edit_button_locator)
+
+    def _get_inline_edit_text_box(self):
+        return self._get_element(
+            *self._inline_project_name_input_text_locator)
+
+    def _get_inline_edit_submit_button(self):
+        return self._get_element(*self._inline_edit_submit_locator)
+
+    @property
+    def inline_edit_button(self):
+        return self._get_inline_edit_action()
+
+    @property
+    def inline_edit_text_box(self):
+        return self._get_inline_edit_text_box()
+
+    @property
+    def inline_edit_submit_button(self):
+        return self._get_inline_edit_submit_button()
 
     @property
     def primary_action(self):
