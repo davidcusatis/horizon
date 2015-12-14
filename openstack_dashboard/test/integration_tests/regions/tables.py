@@ -117,7 +117,7 @@ class ComplexActionRowRegion(BaseActionRowRegion):
 
     def _get_inline_edit_submit_button(self):
         return self._get_element(*self._inline_edit_submit_locator)
-    
+
     @property
     def inline_edit_button(self):
         return self._get_inline_edit_action()
@@ -125,7 +125,7 @@ class ComplexActionRowRegion(BaseActionRowRegion):
     @property
     def inline_edit_text_box(self):
         return self._get_inline_edit_text_box()
-    
+
     @property
     def inline_edit_submit_button(self):
         return self._get_inline_edit_submit_button()

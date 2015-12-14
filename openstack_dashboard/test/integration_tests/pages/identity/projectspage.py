@@ -133,7 +133,8 @@ class ProjectsPage(basepage.BaseNavigationPage):
 
     def edit_project_name(self, project_name, new_project_name):
         row = self._get_row_with_project_name(project_name)
-        ActionChains(self.driver).move_to_element(row.cells[0]).click(row.inline_edit_button).perform()
+        ActionChains(self.driver).move_to_element(
+            row.cells[0]).click(row.inline_edit_button).perform()
         text_box = row.inline_edit_text_box
         text_box.clear()
         text_box.send_keys(new_project_name)
