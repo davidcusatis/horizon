@@ -57,9 +57,11 @@
   function hzExpandDetail(settings) {
     var directive = {
       restrict: 'A',
+      require: '^hzTable',
       scope: {
         icons: '@hzExpandDetail',
-        duration: '@'
+        duration: '@',
+        item: '@'
       },
       link: link
     };
@@ -67,7 +69,7 @@
 
     ////////////////////
 
-    function link(scope, element) {
+    function link(scope, element, attrs, hzTableCtrl) {
       element.on('click', onClick);
 
       function onClick() {
@@ -88,6 +90,7 @@
           };
 
           detailCell.find('.detail-expanded').slideUp(options);
+
         } else {
           summaryRow.toggleClass('expanded');
 
@@ -97,8 +100,12 @@
             detailCell.wrapInner('<div class="detail-expanded"></div>');
           }
 
+          hzTableCtrl.broadcastExpansion(scope.item);
+
           detailCell.find('.detail-expanded').slideDown(duration);
+
         }
+
       }
     }
   }
